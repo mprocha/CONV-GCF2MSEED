@@ -45,7 +45,7 @@ for tr in st:
 #   jday="0"+str(jday)
 
 
-diroutyear="/home/suporte/dados-convertidos/"+year
+diroutyear="/home/suporte/dados-convertidos-sis/"+year
 try:
    os.stat(diroutyear)
 except:

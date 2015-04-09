@@ -11,6 +11,9 @@ usage(){
    echo " "
    echo "gcf2mseed-sis.sh NET STA CHA YEAR"
    echo " "
+   echo "ex: "
+   echo "gcf2mseed-sis.sh OS MC02 HHZ 2013"
+   echo " "
    echo "Marcelo Rocha 12/2014 - marcelorocha.unb@gmail.com"
    echo " "
 }
@@ -50,6 +53,22 @@ elif [ $sta == MC06 ]
 then
    stasis=mc06 
    netsis=mtcla
+elif [ $sta == BAT1 ]
+then
+   stasis=bat1 
+   netsis=furna
+elif [ $sta == BAT2 ]
+then
+   stasis=bat2 
+   netsis=furna
+elif [ $sta == SIM1 ]
+then
+   stasis=sim1 
+   netsis=furna
+elif [ $sta == SIM2 ]
+then
+   stasis=sim2 
+   netsis=furna
 else
    echo "Station not found!!"
    exit 1
