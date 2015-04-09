@@ -1,0 +1,84 @@
+#!/usr/bin/python
+
+#Programa para fazer um merge nos arquivos sac dentro de um diretorio para um mesmo dia
+
+import os
+import sys
+from obspy.core import read,UTCDateTime
+
+net = sys.argv[1]
+sta = sys.argv[2]
+cha = sys.argv[3]
+year = sys.argv[4]
+jday = sys.argv[5]
+print(jday)
+
+# Le os arquivos
+st = read("*")
+
+# Interpola gaps:
+st.merge(method=1, fill_value="interpolate")
+
+year=str(year)
+jday=str(jday)
+
+sb=year+"-"+jday+"T00:00:00.0"
+b=UTCDateTime(sb)
+print(b)
+se=year+"-"+jday+"T23:59:59.99"
+e=UTCDateTime(se)
+print(e)
+
+
+for tr in st:
+   tr.stats.network = net
+   tr.stats.station = sta
+   tr.stats.channel = cha
+   tr.stats.starttime = b
+#   tr.stats.endtime = e
+#   year = tr.stats.starttime.year
+#   jday = tr.stats.starttime.julday
+
+#if jday < 10:
+#   jday="00"+str(jday)
+#elif jday < 100:
+#   jday="0"+str(jday)
+
+
+diroutyear="/home/suporte/dados-convertidos/"+year
+try:
+   os.stat(diroutyear)
+except:
+   os.mkdir(diroutyear)
+
+diroutnet=diroutyear+"/"+net
+try:
+   os.stat(diroutnet)
+except:
+   os.mkdir(diroutnet)
+
+diroutsta=diroutnet+"/"+sta
+try:
+   os.stat(diroutsta)
+except:
+   os.mkdir(diroutsta)
+
+dirout=diroutsta+"/"+cha+".D"
+try:
+   os.stat(dirout)
+except:
+   os.mkdir(dirout)
+
+print(dirout)
+
+
+fileName=dirout+"/"+net+"."+sta+".."+cha+".D."+year+"."+jday
+
+
+#print (jday)
+#print(st)
+
+# Escreve em um arquivo mseed:
+st.write(fileName, format="MSEED")
+t=read(fileName,endtime=e)
+t.write(fileName, format="MSEED")

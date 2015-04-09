@@ -1,0 +1,36 @@
+#!/usr/bin/python
+
+
+
+import sys
+from obspy.core import read
+
+if (len(sys.argv) != 2):
+    print "\nUSAGE: obspyMS2SAC [mseed_file]\n"
+    sys.exit()
+
+st = read(sys.argv[1])
+# to fill gaps:
+st.merge(method=1, fill_value="interpolate")
+
+nTraces = 0
+
+for trace in st :
+    net = trace.stats.network
+    sta = trace.stats.station
+    cha = trace.stats.channel
+    year = str(trace.stats.starttime.year)
+    jday = str(trace.stats.starttime.julday)
+    hour = str(trace.stats.starttime.hour)
+    minu = str(trace.stats.starttime.minute)
+
+    fileName = "/home/paulo/Desktop/scripts/"+net+"."+sta+"."+cha+".D."+year+"."+jday+"."+hour+"."+minu+".SAC"
+
+    try:
+        trace.write(fileName, format="SAC")
+        nTraces += 1
+    except:
+        print "Unable to convert "+sys.argv[1]
+        pass
+    
+print str(nTraces)+" sac file(s) created"

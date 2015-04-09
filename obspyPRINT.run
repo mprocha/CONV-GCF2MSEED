@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for i in *
+do
+   echo $i
+   /home/suporte/CONV-GCF2MSEED/obspyPRINT $i
+done

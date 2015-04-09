@@ -1,0 +1,13 @@
+#!/usr/bin/python
+
+from obspy.core import read
+import glob
+import os
+import sys
+
+file=sys.argv[1]
+
+#for file in glob.glob("*"):
+st=read(file) 
+print(st)
+st.plot()
